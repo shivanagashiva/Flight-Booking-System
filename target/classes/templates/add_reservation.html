@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book a Flight</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #a5cdfa, #89fae7);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .booking-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .form-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 12px;
+        }
+
+        .btn {
+            border-radius: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .warn, .success {
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .warn {
+            color: #d9534f;
+        }
+
+        .success {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h1>Book a Flight</h1>
+        <form action="#" th:action="@{/user/reservation/save_created_reservation}" th:object="${flight}" method="post">
+            <div class="mb-3">
+                <label for="from" class="form-label">Departure City</label>
+                <input type="text" id="from" th:field="*{from}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="to" class="form-label">Arrival City</label>
+                <input type="text" id="to" th:field="*{to}" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">Departure Date</label>
+                <input type="date" id="date" th:field="*{date}" class="form-control" required>
+            </div>
+            <div class="mb-3" th:object="${reservation}">
+                <label for="seat" class="form-label">Seat Number</label>
+                <input type="text" id="seat" th:field="*{seatNumber}" class="form-control" required>
+            </div>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Reserve</button>
+                <a href="#" th:href="@{/user/dashboard_customer}" class="btn btn-outline-secondary">Back to Dashboard</a>
+            </div>
+        </form>
+
+        <div th:if="${!flightExist}" class="warn">Flight doesn't exist! Please choose a different flight.</div>
+        <div th:if="${seatOccupied}" class="warn">Seat is occupied! Please choose another seat.</div>
+        <div th:if="${seatFull}" class="warn">All Seats are occupied! Please choose another Date.</div>
+        <div th:if="${reservationExist}" class="warn">Reservation already exists! Please choose a different flight.</div>
+        <div th:if="${createSuccess}" class="success">Reservation was added to the system.</div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
